@@ -78,7 +78,7 @@ def login_user(login:str, password:str):
     cursor.execute("""SELECT id
                         FROM user
                         WHERE login == ? 
-                            OR password == ?
+                            AND password == ?
                     """,(login,password))
     data = cursor.fetchone()
     db_close()
