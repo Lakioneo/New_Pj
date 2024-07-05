@@ -129,7 +129,7 @@ def get_all_category():
 def add_product(title:str, info:str, prise:float, id_category:int):
     "add_product -> id"
     db_open()
-    cursor.execute("""INSERT INTO product(title,info,prise,id_category)
+    cursor.execute("""INSERT INTO product(title, info, prise, id_category)
                             VALUES (?,?,?,?) 
                    """,(title,info,prise,id_category,))
     last_id = cursor.lastrowid
@@ -137,13 +137,14 @@ def add_product(title:str, info:str, prise:float, id_category:int):
     return last_id
 
 def get_product(id:int):
-    " get_product -> [id, title, info, prise, id_category] "
+    " get_product -> [id, title, info, prise, category] "
     db_open()
-    cursor.execute("""SELECT id, title, info, prise, id_category
-                        FROM product
-                        WHERE id == ?  
+    cursor.execute("""SELECT product.id, product.title, product.info, product.prise, category.title
+                        FROM product, category
+                        WHERE product.id_category == category.id
+                            AND product.id == ?  
                    """,(id,))
-    data = cursor.fetchone()
+    data = cursor.fetchall()
     db_close()
     return data
 
@@ -172,9 +173,9 @@ if __name__ == "__main__":
     db_del()
     db_create()
     if True:
-        reg_user("name1", "login1", "password1", "mail1")
-        reg_user("name2", "login2", "password2", "mail2")
-        reg_user("name3", "login3", "password3", "mail3")
+        reg_user("name1", "login1", "1111", "name1@gmail.com")
+        reg_user("name2", "login2", "2222", "name2@gmail.com")
+        reg_user("name3", "login3", "3333", "name3@gmail.com")
 
         add_category("ТЕЛЕФОНЫ") # id = 1
         add_category("НОУТБУКИ") # id = 2

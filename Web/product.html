@@ -2,13 +2,15 @@
 
 
 {% block style %}{% endblock %}
-{% block title %}Product{% endblock %}
+{% block title %}<title>Product</title>{% endblock %}
 
 {% block main %}
-    <h1>{{ title}} /// {{category}}</h1>
-    <p>{{prise}}</p>
-    <p>{{info}}</p>
-    <a href="/main">кнопка</a>
-    
+
+    {% for id, title, info, prise, category in data %}
+        <h1>{{title}} /// {{category}}</h1>
+        <p>{{prise}}</p>
+        <p>{{info}}</p>
+        <a href="/main">кнопка</a>
+    {% endfor %}
 
 {% endblock %}

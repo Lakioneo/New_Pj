@@ -50,23 +50,35 @@ def index():
 @isLogin
 def main():
     data = db_api.get_all_product()
+    all_category = db_api.get_all_category()
     user = db_api.get_user(session["user_id"])
-    print(data)
-    return render_template("main.html", data = data, user = user)
+    return render_template("main.html", 
+                           data = data, 
+                           all_category = all_category,
+                           user = user)
+
+@app.route("/main/category/<id>", 
+           endpoint = "category", 
+           methods = ["POST","GET"])
+@isLogin
+def category(id:int):
+    data = db_api.get_form_category_product(id)
+    all_category = db_api.get_all_category()
+    user = db_api.get_user(session["user_id"])
+    return render_template("main.html", 
+                            data = data,
+                            all_category = all_category,
+                            user = user)
 
 @app.route("/product/<id>", 
            endpoint = "product", 
-           methods = ["POST","GET"])# <a href="localhost:5000/product/{{id}}">кнопка</a>
+           methods = ["POST","GET"])
 @isLogin
 def product(id:int):
     data = db_api.get_product(id)
     user = db_api.get_user(session["user_id"])
     return render_template("product.html", 
-                            id = data[0],
-                            title = data[1],
-                            info = data[2], 
-                            prise = data[3], 
-                            category = db_api.get_category(data[4])[1], 
+                            data = data,
                             user = user)
 
 @app.route("/exit", 
@@ -90,11 +102,11 @@ def login():
 
     return render_template("login.html")
 
-@app.route("/reg", 
-           endpoint = "reg", 
+@app.route("/registration", 
+           endpoint = "registration", 
            methods = ["POST","GET"])
 @inLogin
-def reg():
+def registration():
     if request.method == "POST":
         if request.form.get("password1") ==  request.form.get("password2"):
             id = db_api.reg_user(
@@ -107,7 +119,7 @@ def reg():
                 session["user_id"] = id[0]
                 return redirect(url_for("index"))
 
-    return render_template("reg.html")
+    return render_template("registration.html")
 
 
 app.run()

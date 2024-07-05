@@ -2,12 +2,18 @@
 
 
 {% block style %}{% endblock %}
-{% block title %}Main{% endblock %}
+{% block title %}<title>Main</title>{% endblock %}
 
 
 {% block main %}
-    
-    <h1> Вы зашли на Main </h1> 
+
+    <h1> Вы зашли на Main </h1>
+    <p>
+        {% for id, title in all_category %}
+            <a href="/main/category/{{id}}"> {{title}} </a>///
+        {% endfor %}
+        <a href="/main"> ВСЕ </a>
+    </p>
     {% for id, title, info, prise, id_category in data %}
         <p>{{title}}</p> 
         <p><a href="/product/{{id}}">кнопка</a></p>
